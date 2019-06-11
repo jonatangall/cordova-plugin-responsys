@@ -10,7 +10,7 @@ module.exports = function (ctx) {
     
     let platformRoot = path.join(ctx.opts.projectRoot, 'platforms/android');
     let manifestPath = path.join(platformRoot, 'AndroidManifest.xml');;
-    if (!fs.existsSync(manifest)) {
+    if (!fs.existsSync(manifestPath)) {
         // android platform >= 7.1.0
         manifestPath = path.join(platformRoot, 'app', 'src', 'main', 'AndroidManifest.xml');
     }
