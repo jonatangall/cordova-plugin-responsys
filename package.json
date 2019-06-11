@@ -1,6 +1,6 @@
 {
   "cordova": {
-    "id": "Responsys",
+    "id": "cordova-plugin-responsys",
     "platforms": [
       "ios",
       "android"
@@ -14,6 +14,6 @@
     "cordova-android"
   ],
   "license": "ISC",
-  "name": "oi-responsys",
-  "version": "1.1.4"
+  "name": "cordova-plugin-responsys",
+  "version": "0.0.1"
 }
