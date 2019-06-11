@@ -1,0 +1,16 @@
+{
+  "pushio": {
+    "appName": "Shipt Member App Production Distribution",
+    "platformName": "Shipt Member App Production Distribution Android",
+    "platform_type": "gcm",
+    "apiKey": "ABEk0aNirYkVQhTa6oSRdVu84",
+    "apiHost": "api.pushio.com",
+    "bundleId": null,
+    "accountToken": "ABEnI-vhhKg3clQlopUdwGCYI",
+    "conversionUrl": "http://email.shipt.com/pub/cct",
+    "riAppId": "8000005"
+  },
+  "google": {
+    "projectId": "897704621141"
+  }
+}

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="responsys" version="1.1.4">
+    <name>Responsys</name>
+    <engines>
+        <engine name="cordova" version="&gt;=4.0.0" />
+    </engines>
+    <js-module name="Responsys" src="www/Responsys.js">
+        <clobbers target="Responsys" />
+    </js-module>
+    <platform name="ios">
+        <hook src="scripts/hooks/hook-symlink-fix.js" type="before_compile" />
+        <hook src="scripts/ios/ios-plist.js" type="after_prepare" />
+        <hook src="scripts/ios/updateConfig.js" type="after_prepare" />
+        <config-file target="*-Info.plist" parent="CFBundleURLTypes">
+            <array>
+                <dict>
+                    <key>CFBundleURLName</key>
+                    <string>push</string>
+                    <key>CFBundleURLSchemes</key>
+                    <array>
+                        <string>pio-ABEk0aNirYkVQhTa6oSRdVu84</string>
+                    </array>
+                </dict>
+            </array>
+        </config-file>
+        <config-file parent="/*" target="config.xml">
+            <feature name="Responsys">
+                <param name="ios-package" value="Responsys" />
+                <param name="deployment-target" value="7.0" />
+                <param name="onload" value="true" />
+            </feature>
+        </config-file>
+        <header-file src="src/ios/AppDelegate+ResponsysNotification.h" />
+        <source-file src="src/ios/Responsys.m" />
+        <source-file src="src/ios/AppDelegate+ResponsysNotification.m" />
+        <resource-file src="libs/ios/pushio_config.json"/>
+        <framework src="libs/ios/PushIOManager.framework" custom="true" />
+        <framework src="libs/ios/PIOMediaAttachmentExtension.framework" custom="true" />
+        <framework src="UserNotifications.framework" />
+        <framework src="libsqlite3.0.tbd" />
+        <framework src="CoreLocation.framework" />
+    </platform>
+    <platform name="android">
+        <hook type="before_compile" src="scripts/android/updateManifest.js" />
+        <hook type="after_platform_add" src="scripts/android/updateManifest.js" />
+        <hook type="after_prepare" src="scripts/android/updateManifest.js" />
+        <hook type="before_compile" src="scripts/android/updateResourcesStrings.js" />
+        <hook type="before_compile" src="scripts/android/updateAssetsPushIOConfig.js" />
+        <config-file parent="/*" target="res/xml/config.xml">
+            <feature name="Responsys">
+                <param name="android-package" value="responsys.Responsys" />
+            </feature>
+        </config-file>
+        <config-file parent="/*" target="AndroidManifest.xml">
+            <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
+            <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+            <uses-permission android:name="android.permission.WAKE_LOCK" />
+            <uses-permission android:name="android.permission.INTERNET" />
+            <permission android:name="${applicationId}.permission.C2D_MESSAGE" android:protectionLevel="signature" /> 
+            <permission android:name="${applicationId}.permission.PUSHIO_MESSAGE" android:protectionLevel="signature" />
+            <uses-permission android:name="${applicationId}.permission.PUSHIO_MESSAGE" />
+            <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+        </config-file>
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <receiver android:name="com.pushio.manager.PushIOBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND">
+                <intent-filter>
+                    <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                    <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                    <category android:name="${applicationId}" />
+                </intent-filter>
+            </receiver>
+            <activity android:name="com.pushio.manager.PushIOActivityLauncher" android:exported="true" />
+            <service android:name="com.pushio.manager.PushIOGCMIntentService" />
+            <service android:name="com.pushio.manager.PushIOEngagementService" />
+            <receiver android:name="com.pushio.manager.PushIOUriReceiver" android:enabled="true" android:exported="false">
+                <intent-filter>
+                    <action android:name="android.intent.action.VIEW" />
+                    <category android:name="android.intent.category.DEFAULT" />
+                    <data android:scheme="@string/responsys_api_key" />
+                </intent-filter>
+            </receiver>
+            <activity android:name="com.pushio.manager.iam.ui.PushIOMessageViewActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar">
+                <intent-filter>
+                    <action android:name="android.intent.action.VIEW" />
+                    <category android:name="android.intent.category.DEFAULT" />
+                    <category android:name="android.intent.category.BROWSABLE" />
+                    <data android:scheme="@string/responsys_api_key" />
+                </intent-filter>
+            </activity>
+            <service android:name="com.pushio.manager.PIOGCMRegistrationIntentService" android:exported="false" />
+            <service android:name="com.pushio.manager.PIOInstanceIDListenerService" android:exported="false">
+                <intent-filter>
+                    <action android:name="com.google.android.gms.iid.InstanceID" />
+                </intent-filter>
+            </service>
+            <service android:name="com.pushio.manager.PushIOUrlHandlerService" />
+        </config-file>
+        <config-file target="AndroidManifest.xml" parent="/manifest/application/activity">
+            <intent-filter>
+                <action android:name="${applicationId}.NOTIFICATIONPRESSED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </config-file>
+        <source-file src="src/android/Responsys.java" target-dir="src/responsys/Responsys" />
+        <source-file src="src/android/MyApplication.java" target-dir="src/responsys/Responsys" />
+        <framework src="src/android/responsys.gradle" custom="true" type="gradleReference" />
+        <lib-file src="libs/android/PushIOManager.aar" />
+    </platform>
+</plugin>

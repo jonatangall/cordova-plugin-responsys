@@ -1,0 +1,19 @@
+{
+  "cordova": {
+    "id": "Responsys",
+    "platforms": [
+      "ios",
+      "android"
+    ]
+  },
+  "dependencies": {},
+  "description": "Cordova plugin for Responsys Push Notification & In App Notification.",
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-ios",
+    "cordova-android"
+  ],
+  "license": "ISC",
+  "name": "responsys",
+  "version": "1.1.4"
+}
